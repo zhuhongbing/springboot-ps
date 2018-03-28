@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" >
+<head th:include="util/head">
+
+<title>Cyrus Studio</title>
+
+</head>
+
+<body>
+
+<div class="topbar animated fadeInLeftBig"></div>
+
+<!-- Header Starts -->
+<div class="navbar-wrapper">
+      <div class="container">
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" id="top-nav">
+          <div class="container">
+            <div class="navbar-header">
+              <!-- Logo Starts -->
+              <a class="navbar-brand" href="#home"><img src="image/logo.png" alt="logo"/></a>
+              <!-- #Logo Ends -->
+
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            </div>
+            <!-- Nav Starts -->
+            <div class="navbar-collapse  collapse">
+              <ul class="nav navbar-nav navbar-right scroll">
+                 <li class="active"><a href="#works">Home</a></li>
+                 <li ><a href="#partners">Partners</a></li>
+                 <li th:if="${session.userId == null}"><a href="#Login">登陆</a></li>
+                 <li th:if="${session.userId == null}"><a href="#contact">注册</a></li>
+                  <li th:if="${session.userId > 0}"><a href="#upimg">上传图片</a></li>
+                  <li th:if="${session.userId > 0}"><a href="#upinfo">修改个人信息</a></li>
+                  <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      分类
+                      <b class="caret"></b>
+                  </a>
+                      <ul class="dropdown-menu">
+                          <li><a href="/">全部</a></li>
+                          <li><a onclick="getCate(this)">经典</a></li>
+                          <li><a onclick="getCate(this)">音乐</a></li>
+                          <li><a onclick="getCate(this)">运动</a></li>
+                      </ul>
+                  </li>
+              </ul>
+            </div>
+            <!-- #Nav Ends -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+<!-- #Header Starts -->
+
+
+<!-- works -->
+<div id="works"  class=" clearfix grid"> 
+<!--这里是图片列表-->
+</div>
+<!-- works -->
+
+
+
+<!--留言 开始-->
+<div id="partners" class="container spacer ">
+	<h2 class="text-center  wowload fadeInUp">在这里留下你的意见</h2>
+  <div class="clearfix">
+    <div class="col-sm-6 partners  wowload fadeInLeft">
+        <img src="image/portfolio/1.jpg" alt="img01" style="width:100%; height:100%;"/>
+        <div >
+            <form id="lwform">
+                <div class="input-group col-sm-6 col-sm-offset-3 col-xs-12">
+                    <input type="text" id="LW" name="lword" placeholder="在此处输入你的意见"/>
+                    <span class="input-group-btn">
+                        <input class="btn btn-primary" type="button" onclick="setLW()" value="提交"/>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-sm-6">
+    <div id="carousel-testimonials" class="carousel slide testimonails  wowload fadeInRight" data-ride="carousel">
+    <div id="lwitem" class="carousel-inner">
+
+
+
+  </div>
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#carousel-testimonials" data-slide-to="0" onclick="getLwLow()" class="active"></li>
+            <li data-target="#carousel-testimonials" data-slide-to="1" onclick="getLwup()"></li>
+        </ol>
+        <!-- Indicators -->
+
+  </div>
+
+    </div>
+  </div>
+</div>
+<!--留言  结束-->
+<hr/>
+
+
+
+<a href="#works" class="gototop "><i class="fa fa-angle-up  fa-3x"></i></a>
+
+<!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
+<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls">
+    <!-- The container for the modal slides -->
+    <div class="slides"></div>
+    <!-- Controls for the borderless lightbox -->
+    <h3 class="title">Title</h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <!-- The modal dialog, which will be used to wrap the lightbox content -->    
+</div>
+
+
+<div th:if="${session.userId == null}">
+    <hr/>
+<!--Login Starts-->
+<div id="Login" class="spacer">
+
+    <div class="container contactform center">
+        <h2 class="text-center  wowload fadeInUp">登陆</h2>
+        <div class="row wowload fadeInLeftBig">
+            <div class="col-sm-6 col-sm-offset-3 col-xs-12">
+                <form id="loginfrom"  >
+                        <input type="text"  name="username" id="username" placeholder="用户名"/>
+                        <input type="password"  name="password" id="password" placeholder="密码"/>
+                        <input type="text"  name="code" id="code" placeholder="请输入验证码"/>
+                        <img src="/defaultKaptcha" onclick = "this.src='/defaultKaptcha?d='+new Date()*1"/>
+                    <input type="button" class="btn btn-primary" value="登陆" onclick="Login()"/>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--Login Ends-->
+
+<!--Contact Starts-->
+<div id="contact" class="spacer">
+
+    <div class="container contactform center">
+        <h2 class="text-center  wowload fadeInUp">注册</h2>
+        <div class="row wowload fadeInLeftBig">
+            <div class="col-sm-6 col-sm-offset-3 col-xs-12">
+                <form id="enrollform" enctype="multipart/form-data">
+                    <input type="file"  name="file" id="file" />
+                    <input type="text"  name="username" id="username1" placeholder="用户名"/>
+                    <input type="password"  name="password" id="password1" placeholder="密码"/>
+                    <input type="password"  name="password2" id="password2" placeholder="确认密码"/>
+                    <input type="button" class="btn btn-primary" value="注册" onclick="Enroll()"/>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--Contact Ends-->
+</div>
+
+
+<div th:if="${session.userId > 0}">
+
+    <hr/>
+    <!--upimg Starts-->
+
+
+    <div id="upimg" class="spacer">
+
+        <div class="container contactform center">
+            <h2 class="text-center  wowload fadeInUp">上传图片</h2>
+            <div class="row wowload fadeInLeftBig">
+                <div class="col-sm-6 col-sm-offset-3 col-xs-12">
+                    <form id="addform" enctype="multipart/form-data">
+                        <div class="input-group">
+                            <!-- 下拉框 -->
+                            <select name="imgcate">
+                                <option value="all">分类</option>
+                                <option value="经典">经典</option>
+                                <option value="音乐">音乐</option>
+                                <option value="运动">运动</option>
+                            </select>
+
+                        </div><!-- /input-group -->
+                        <input type="text" name="imgtitle" placeholder="添加一个标题"/>
+                        <input  type="file"  name="file" />
+
+                            <input class="btn btn-primary" type="button" onclick="addArticle()" value="提交"/>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--upimg Ends-->
+<hr/>
+    <!--info Starts-->
+    <div id="upinfo" class="spacer">
+
+        <div class="container contactform center">
+            <h2 class="text-center  wowload fadeInUp">修改密码</h2>
+            <div class="row wowload fadeInLeftBig">
+                <div class="col-sm-6 col-sm-offset-3 col-xs-12">
+                    <form id="upDataInfo">
+                    <input type="password"  name="password" id="passwordup1" placeholder="密码"/>
+                    <input type="password"  name="password2" id="passwordup2" placeholder="确认密码"/>
+                    <input type="button" class="btn btn-primary" value="提交" onclick="upData()"/>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--info Ends-->
+</div>
+<script src="index.js"></script>
+
+</body>
+</html>
